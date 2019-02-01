@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.os.FileObserver;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -53,11 +54,12 @@ import com.github.florent37.camerafragment.listeners.CameraFragmentVideoRecordTe
 import java.io.File;
 import java.util.ArrayList;
 
-/*
+/**
+ * TODO 考虑一下这种架构设计的思路是什么？？？
+ *
  * Created by memfis on 12/1/16.
  * Updated by amadeu01
  */
-
 @SuppressLint("WrongConstant")
 public abstract class BaseAnncaFragment<CameraId> extends Fragment implements CameraFragmentApi {
 
@@ -73,6 +75,7 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment implements Ca
     protected int newQuality = -1;
     private Configuration configuration;
     private SensorManager sensorManager = null;
+    /* TODO 这个类会将根据属性发生的变化进行处理！！ */
     private CameraController cameraController;
     private AlertDialog settingsDialog;
     private CameraFragmentControlsListener cameraFragmentControlsListener;
@@ -106,6 +109,8 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment implements Ca
     private long maxVideoFileSize = 0;
     private TimerTaskBase countDownTimer;
     private SensorEventListener sensorEventListener = new SensorEventListener() {
+
+        /* TODO 传感器监听器中的变量的作用是什么？？？ */
         @Override
         public void onSensorChanged(SensorEvent sensorEvent) {
             synchronized (this) {
@@ -131,6 +136,8 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment implements Ca
                             configurationProvider.setDegrees(configurationProvider.getDeviceDefaultOrientation() == Configuration.ORIENTATION_PORTRAIT ? 270 : 0);
                         }
                     }
+                    /* 貌似只有这一个地方调用的方法对实际的 UI 产生了效果……
+                     * 这里貌似只有通知 UI 层屏幕的方向发生了变化的作用 */
                     onScreenRotation(configurationProvider.getDegrees());
                 }
             }
@@ -165,6 +172,7 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment implements Ca
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /* 使用传入的配置 */
         final Bundle arguments = getArguments();
         if (arguments != null) {
             configuration = (Configuration) arguments.getSerializable(ARG_CONFIGURATION);
@@ -172,8 +180,10 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment implements Ca
         this.configurationProvider = new ConfigurationProviderImpl();
         this.configurationProvider.setupWithAnnaConfiguration(configuration);
 
+        /* 获取传感器 */
         this.sensorManager = (SensorManager) getContext().getSystemService(Activity.SENSOR_SERVICE);
 
+        /* TODO 这个类就是用来进行回调的，一个普通的接口……定义成这个名字让然感觉好别扭…… */
         final CameraView cameraView = new CameraView() {
 
             @Override
@@ -188,7 +198,6 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment implements Ca
 
             @Override
             public void updateUiForMediaAction(@Configuration.MediaAction int mediaAction) {
-
             }
 
             @Override
@@ -226,23 +235,26 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment implements Ca
             }
         };
 
+        /* 判断使用哪个相机 */
         if (CameraHelper.hasCamera2(getContext())) {
             cameraController = new Camera2Controller(getContext(), cameraView, configurationProvider);
         } else {
             cameraController = new Camera1Controller(getContext(), cameraView, configurationProvider);
         }
+        /* 通知 */
         cameraController.onCreate(savedInstanceState);
 
-        //onProcessBundle
+        // 是拍照片还是拍视频
         currentMediaActionState = configurationProvider.getMediaAction() == Configuration.MEDIA_ACTION_VIDEO ?
                 MediaAction.ACTION_VIDEO : MediaAction.ACTION_PHOTO;
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         previewContainer = (AspectFrameLayout) view.findViewById(R.id.previewContainer);
 
+        /* 设置方向 */
         final int defaultOrientation = Utils.getDeviceDefaultOrientation(getContext());
         switch (defaultOrientation) {
             case android.content.res.Configuration.ORIENTATION_LANDSCAPE:
@@ -253,6 +265,7 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment implements Ca
                 break;
         }
 
+        /* 相机模式，但是感觉这种回调的方式不太好啊…… */
         switch (configurationProvider.getFlashMode()) {
             case Configuration.FLASH_MODE_AUTO:
                 setFlashMode(Flash.FLASH_AUTO);
@@ -306,6 +319,8 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment implements Ca
         super.onResume();
 
         cameraController.onResume();
+
+        /* TODO 传感器监听，这里是否可以用来设置自动对焦？看他们是如何处理的！ */
         sensorManager.registerListener(sensorEventListener, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
 
         if (cameraFragmentControlsListener != null) {
@@ -528,10 +543,17 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment implements Ca
         }
     }
 
+    /**
+     * 当屏幕方向发生变化时候的处理
+     *
+     * @param degrees 旋转的角度
+     */
     protected void onScreenRotation(int degrees) {
+        /* 通知屏幕方向发生了变化，以在 UI 层做相应的处理 */
         if (cameraFragmentStateListener != null) {
             cameraFragmentStateListener.shouldRotateControls(degrees);
         }
+        /* 旋转设置对话框 */
         rotateSettingsDialog(degrees);
     }
 

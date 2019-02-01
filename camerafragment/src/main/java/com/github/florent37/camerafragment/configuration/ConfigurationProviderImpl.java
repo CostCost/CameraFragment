@@ -1,9 +1,10 @@
 package com.github.florent37.camerafragment.configuration;
 
-/*
+/**
+ * 这个用来提供给 Manager 使用，内部缓存了状态信息
+ *
  * Created by florentchampigny on 12/01/2017.
  */
-
 public class ConfigurationProviderImpl implements ConfigurationProvider {
 
     protected long videoFileSize = -1;

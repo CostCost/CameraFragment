@@ -69,6 +69,9 @@ public class CameraFragmentMainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
     }
 
+    /**
+     * 闪光灯
+     */
     @OnClick(R.id.flash_switch_view)
     public void onFlashSwitcClicked() {
         final CameraFragmentApi cameraFragment = getCameraFragment();
@@ -77,6 +80,9 @@ public class CameraFragmentMainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * 前后相机
+     */
     @OnClick(R.id.front_back_camera_switcher)
     public void onSwitchCameraClicked() {
         final CameraFragmentApi cameraFragment = getCameraFragment();
@@ -85,6 +91,9 @@ public class CameraFragmentMainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * 拍视频
+     */
     @OnClick(R.id.record_button)
     public void onRecordButtonClicked() {
         final CameraFragmentApi cameraFragment = getCameraFragment();
@@ -105,6 +114,9 @@ public class CameraFragmentMainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * TODO 选择相机的分辨率
+     */
     @OnClick(R.id.settings_view)
     public void onSettingsClicked() {
         final CameraFragmentApi cameraFragment = getCameraFragment();
@@ -121,6 +133,9 @@ public class CameraFragmentMainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * 添加相机
+     */
     @OnClick(R.id.addCameraButton)
     public void onAddCameraClicked() {
         if (Build.VERSION.SDK_INT > 15) {
@@ -137,7 +152,7 @@ public class CameraFragmentMainActivity extends AppCompatActivity {
                 }
             }
             if (!permissionsToRequest.isEmpty()) {
-                ActivityCompat.requestPermissions(this, permissionsToRequest.toArray(new String[permissionsToRequest.size()]), REQUEST_CAMERA_PERMISSIONS);
+                ActivityCompat.requestPermissions(this, permissionsToRequest.toArray(new String[0]), REQUEST_CAMERA_PERMISSIONS);
             } else addCamera();
         } else {
             addCamera();
@@ -148,21 +163,32 @@ public class CameraFragmentMainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length != 0) {
+            /* 添加相机 */
             addCamera();
         }
     }
 
+    /**
+     * TODO 准备相机相关的资源
+     */
     @RequiresPermission(Manifest.permission.CAMERA)
     public void addCamera() {
         addCameraButton.setVisibility(View.GONE);
         cameraLayout.setVisibility(View.VISIBLE);
 
-        final CameraFragment cameraFragment = CameraFragment.newInstance(new Configuration.Builder()
-                .setCamera(Configuration.CAMERA_FACE_REAR).build());
+        // region 构建和显示相机碎片
+        /* 构建相机相关的配置参数，使用构建者模式 */
+        final CameraFragment cameraFragment = CameraFragment.newInstance(
+                new Configuration.Builder()
+                        .setCamera(Configuration.CAMERA_FACE_REAR)
+                        .build());
+
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.content, cameraFragment, FRAGMENT_TAG)
                 .commitAllowingStateLoss();
+        // endregion
 
+        // region 相机状态相关的回调：主要用来控制 UI
         if (cameraFragment != null) {
             //cameraFragment.setResultListener(new CameraFragmentResultListener() {
             //    @Override
@@ -256,7 +282,6 @@ public class CameraFragmentMainActivity extends AppCompatActivity {
                 public void onStartVideoRecord(File outputFile) {
                 }
             });
-
             cameraFragment.setControlsListener(new CameraFragmentControlsAdapter() {
                 @Override
                 public void lockControls() {
@@ -289,7 +314,6 @@ public class CameraFragmentMainActivity extends AppCompatActivity {
                     mediaActionSwitchView.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
                 }
             });
-
             cameraFragment.setTextListener(new CameraFragmentVideoRecordTextAdapter() {
                 @Override
                 public void setRecordSizeText(long size, String text) {
@@ -312,6 +336,7 @@ public class CameraFragmentMainActivity extends AppCompatActivity {
                 }
             });
         }
+        // endregion
     }
 
     private CameraFragmentApi getCameraFragment() {

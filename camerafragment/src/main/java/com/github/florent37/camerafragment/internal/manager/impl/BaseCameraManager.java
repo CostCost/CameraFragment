@@ -15,7 +15,9 @@ import com.github.florent37.camerafragment.configuration.ConfigurationProvider;
 import com.github.florent37.camerafragment.internal.manager.CameraManager;
 import com.github.florent37.camerafragment.internal.utils.Size;
 
-/*
+/**
+ * Manager 的基础类
+ *
  * Created by memfis on 8/14/16.
  */
 abstract class BaseCameraManager<CameraId, SurfaceListener>

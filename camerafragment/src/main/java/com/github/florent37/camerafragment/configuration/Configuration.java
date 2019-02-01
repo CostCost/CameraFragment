@@ -7,7 +7,9 @@ import java.io.Serializable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-/*
+/**
+ * 相机的配置类，基于构建者模式获取类的实例并进行配置，这个可以理解成是提供给用户使用的类
+ *
  * Created by memfis on 7/6/16.
  * Updated by Florent37
  */

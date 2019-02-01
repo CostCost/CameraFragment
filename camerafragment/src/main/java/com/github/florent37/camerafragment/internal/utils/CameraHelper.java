@@ -23,25 +23,30 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-/*
+/**
  * Created by memfis on 7/6/16.
  * <p/>
  * Class with some common methods to work with camera.
  */
 public final class CameraHelper {
 
-    public final static String TAG = "CameraHelper";
+    public static final String TAG = "CameraHelper";
+
     private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
 
-
-    private CameraHelper() {
-    }
+    private CameraHelper() { }
 
     public static boolean hasCamera(Context context) {
         return context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA) ||
                 context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT);
     }
 
+    /**
+     * 检测 Camera2 是否可用
+     *
+     * @param context 上下文
+     * @return 是否可用
+     */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public static boolean hasCamera2(Context context) {
         if (context == null) return false;

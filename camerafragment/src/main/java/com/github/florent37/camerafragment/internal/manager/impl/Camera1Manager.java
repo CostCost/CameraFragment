@@ -32,7 +32,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
+/**
  * Created by memfis on 8/14/16.
  */
 @SuppressWarnings("deprecation")
@@ -40,6 +40,7 @@ public class Camera1Manager extends BaseCameraManager<Integer, SurfaceHolder.Cal
 
     private static final String TAG = "Camera1Manager";
 
+    /* 相机 */
     private Camera camera;
     private Surface surface;
 
@@ -53,8 +54,7 @@ public class Camera1Manager extends BaseCameraManager<Integer, SurfaceHolder.Cal
     private Integer futurFlashMode;
 
     @Override
-    public void openCamera(final Integer cameraId,
-                           final CameraOpenListener<Integer, SurfaceHolder.Callback> cameraOpenListener) {
+    public void openCamera(final Integer cameraId, final CameraOpenListener<Integer, SurfaceHolder.Callback> cameraOpenListener) {
         this.currentCameraId = cameraId;
         backgroundHandler.post(new Runnable() {
             @Override

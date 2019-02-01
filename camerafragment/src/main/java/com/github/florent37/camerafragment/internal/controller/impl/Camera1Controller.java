@@ -23,15 +23,16 @@ import com.github.florent37.camerafragment.listeners.CameraFragmentResultListene
 
 import java.io.File;
 
-/*
+/**
+ * TODO 两个 Controller 中基本都是调用各自的 Manager 来实现的，感觉没有必要增加这一层设计，在 Fragment 里面直接调用 Manager 即可
+ *
  * Created by memfis on 7/7/16.
  */
-
 @SuppressWarnings("deprecation")
 public class Camera1Controller implements CameraController<Integer>,
         CameraOpenListener<Integer, SurfaceHolder.Callback>, CameraPhotoListener, CameraCloseListener<Integer>, CameraVideoListener {
 
-    private final static String TAG = "Camera1Controller";
+    private static final String TAG = "Camera1Controller";
 
     private final Context context;
 

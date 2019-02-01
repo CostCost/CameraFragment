@@ -1,20 +1,18 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion project.sdk
-    buildToolsVersion project.buildTools
-
+    compileSdkVersion 28
+    buildToolsVersion '28.0.2'
     defaultConfig {
-        minSdkVersion project.minSdk
-        targetSdkVersion project.sdk
-
+        minSdkVersion 17
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
     }
 }
 
 dependencies {
-    compile "com.android.support:appcompat-v7:" + project.supportVersion
+    compile "com.android.support:appcompat-v7:28.0.0"
     compile 'com.jakewharton:butterknife:7.0.1'
     compile project(':camerafragment')
 }

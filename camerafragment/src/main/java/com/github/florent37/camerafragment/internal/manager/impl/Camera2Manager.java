@@ -51,7 +51,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-/*
+/**
  * Created by memfis on 8/9/16.
  */
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -72,6 +72,7 @@ public final class Camera2Manager extends BaseCameraManager<String, TextureView.
     @CameraPreviewState
     private int previewState = STATE_PREVIEW;
     private CameraManager manager;
+    /* 相机 */
     private CameraDevice cameraDevice;
     private CaptureRequest previewRequest;
     private CaptureRequest.Builder previewRequestBuilder;

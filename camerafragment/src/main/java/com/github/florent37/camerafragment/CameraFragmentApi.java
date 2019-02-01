@@ -8,10 +8,11 @@ import com.github.florent37.camerafragment.listeners.CameraFragmentResultListene
 import com.github.florent37.camerafragment.listeners.CameraFragmentStateListener;
 import com.github.florent37.camerafragment.listeners.CameraFragmentVideoRecordTextListener;
 
-/*
+/**
+ * 通过这个类来定义这个碎片应该对外提供哪些方法
+ *
  * Created by florentchampigny on 16/01/2017.
  */
-
 public interface CameraFragmentApi {
 
     void takePhotoOrCaptureVideo(CameraFragmentResultListener resultListener, @Nullable String directoryPath, @Nullable String fileName);

@@ -30,9 +30,15 @@ public class AspectFrameLayout extends FrameLayout {
         }
     }
 
+    /**
+     * TODO 所以当预览的照片按照长度自适应填满屏幕之后，多余出来的宽度无法显示是这个控件导致的？？
+     * TODO 那么拍照的时候该如何控制以自适应地进行显示呢？不会让拍摄出来的照片和预览的效果不一致，又不会变形
+     *
+     * @param widthMeasureSpec
+     * @param heightMeasureSpec
+     */
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-
         if (targetAspectRatio > 0) {
             int initialWidth = MeasureSpec.getSize(widthMeasureSpec);
             int initialHeight = MeasureSpec.getSize(heightMeasureSpec);

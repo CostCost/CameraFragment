@@ -13,7 +13,7 @@ import android.view.SurfaceView;
 @SuppressLint("ViewConstructor")
 public class AutoFitSurfaceView extends SurfaceView {
 
-    private final static String TAG = "AutoFitSurfaceView";
+    private static final String TAG = "AutoFitSurfaceView";
 
     private final SurfaceHolder surfaceHolder;
 
@@ -29,7 +29,7 @@ public class AutoFitSurfaceView extends SurfaceView {
         this.surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
     }
 
-    /*
+    /**
      * Sets the aspect ratio for this view. The size of the view will be measured based on the ratio
      * calculated fromList the parameters. Note that the actual sizes of parameters don't matter, that
      * is, calling setAspectRatio(2, 3) and setAspectRatio(4, 6) make the same result.

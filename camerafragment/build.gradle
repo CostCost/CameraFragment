@@ -1,12 +1,12 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion project.sdk
-    buildToolsVersion project.buildTools
+    compileSdkVersion 28
+    buildToolsVersion "28.0.2"
 
     defaultConfig {
-        minSdkVersion project.minSdk
-        targetSdkVersion project.sdk
+        minSdkVersion 17
+        targetSdkVersion 28
 
         versionCode 1
         versionName "1.0"
@@ -14,8 +14,8 @@ android {
 }
 
 dependencies {
-    compile "com.android.support:support-v4:" + project.supportVersion
-    compile "com.android.support:appcompat-v7:" + project.supportVersion
+    compile 'com.android.support:appcompat-v7:28.0.0'
+    compile 'com.android.support:support-v4:28.0.0'
 }
 
 task wrapper(type: Wrapper) {
@@ -37,8 +37,6 @@ ext {
     siteUrl = 'https://github.com/florent37/CameraFragment'
     gitUrl = 'https://github.com/florent37/CameraFragment.git'
 
-    libraryVersion = rootProject.ext.libraryVersion
-
     developerId = 'florent37'
     developerName = 'Florent Champigny'
     developerEmail = 'champigny.florent@gmail.com'
@@ -47,6 +45,3 @@ ext {
     licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
     allLicenses = ["Apache-2.0"]
 }
-
-apply from: rootProject.file('gradle/install-v1.gradle')
-apply from: rootProject.file('gradle/bintray-android-v1.gradle')

@@ -27,7 +27,9 @@ import com.github.florent37.camerafragment.internal.ui.view.AspectFrameLayout;
 import com.github.florent37.camerafragment.internal.utils.ImageLoader;
 import com.github.florent37.camerafragment.internal.utils.Utils;
 
-/*
+/**
+ * 用来预览拍摄结果的界面
+ *
  * Created by memfis on 7/6/16.
  */
 public class PreviewActivity extends AppCompatActivity implements View.OnClickListener {
