@@ -25,7 +25,7 @@ import com.github.florent37.camerafragment.listeners.CameraFragmentResultListene
 
 import java.io.File;
 
-/*
+/**
  * Created by memfis on 7/6/16.
  */
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)

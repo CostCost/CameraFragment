@@ -6,7 +6,16 @@ import android.content.Context;
 import android.os.Build;
 import android.view.TextureView;
 
-/*
+/**
+ * TODO 对于 SurfaceView 还是 TextureView 的问题，作者选择的是 TextureView-> Camera2, SurfaceView -> Camera1
+ * Google 非官方的 CameraView 的配置方式，
+
+ API Level	Camera API	Preview View
+ 9-13	    Camera1	    SurfaceView
+ 14-20	    Camera1	    TextureView
+ 21-23	    Camera2	    TextureView
+ 24	        Camera2	    SurfaceView
+
  * Created by memfis on 7/6/16.
  */
 @SuppressLint("ViewConstructor")

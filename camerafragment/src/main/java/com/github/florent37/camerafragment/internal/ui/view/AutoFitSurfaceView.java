@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-/*
+/**
  * Created by memfis on 7/6/16.
  */
 @SuppressWarnings("deprecation")
