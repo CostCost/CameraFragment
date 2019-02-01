@@ -36,6 +36,13 @@ public final class CameraHelper {
 
     private CameraHelper() { }
 
+    // region 获取摄像头信息
+    /**
+     * 是否存在可用的相机
+     *
+     * @param context 上下文
+     * @return 是否存在可用的相机
+     */
     public static boolean hasCamera(Context context) {
         return context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA) ||
                 context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT);
@@ -77,7 +84,16 @@ public final class CameraHelper {
             return false;
         }
     }
+    // endregion
 
+    // region 与输出的媒体文件相关的方法
+    /**
+     * 创建存储的目录
+     *
+     * @param context 上下文
+     * @param pathToDirectory 存储文件的目录
+     * @return 文件目录
+     */
     public static File generateStorageDir(Context context, @Nullable String pathToDirectory) {
         File mediaStorageDir = null;
         if (pathToDirectory != null) {
@@ -87,6 +103,7 @@ public final class CameraHelper {
                     Environment.DIRECTORY_PICTURES), context.getPackageName());
         }
 
+		// 创建目录
         if (!mediaStorageDir.exists()) {
             if (!mediaStorageDir.mkdirs()) {
                 Log.d(TAG, "Failed to create directory.");
@@ -97,7 +114,19 @@ public final class CameraHelper {
         return mediaStorageDir;
     }
 
-    public static File getOutputMediaFile(Context context, @Configuration.MediaAction int mediaAction, @Nullable String pathToDirectory, @Nullable String fileName) {
+    /**
+     * 获取存储多媒体文件的 File 对象
+     *
+     * @param context 上下文
+     * @param mediaAction 多媒体类型
+     * @param pathToDirectory 存储多媒体的目录
+     * @param fileName 文件名
+     * @return 文件
+     */
+    public static File getOutputMediaFile(Context context,
+                                          @Configuration.MediaAction int mediaAction,
+                                          @Nullable String pathToDirectory,
+                                          @Nullable String fileName) {
         final File mediaStorageDir = generateStorageDir(context, pathToDirectory);
         File mediaFile = null;
 
@@ -121,7 +150,17 @@ public final class CameraHelper {
 
         return mediaFile;
     }
+    // endregion
 
+    // region 获取用于预览等的尺寸相关的方法
+
+    /**
+     * TODO 研究一下这个方法！根据媒体的质量计算出合适的尺寸
+     *
+     * @param choices 所有可选的只存
+     * @param mediaQuality 媒体文件的质量
+     * @return 最终的尺寸
+     */
     @SuppressWarnings("deprecation")
     public static Size getPictureSize(List<Size> choices, @Configuration.MediaQuality int mediaQuality) {
         if (choices == null || choices.isEmpty()) return null;
@@ -162,6 +201,13 @@ public final class CameraHelper {
         return result;
     }
 
+    /**
+     * 跟上面的方法的作用和逻辑一样，只是要求传入的参数类型不同
+     *
+     * @param sizes 尺寸
+     * @param mediaQuality 媒体文件的质量
+     * @return 尺寸
+     */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public static Size getPictureSize(Size[] sizes, @Configuration.MediaQuality int mediaQuality) {
         if (sizes == null || sizes.length == 0) return null;
@@ -205,6 +251,14 @@ public final class CameraHelper {
         return result;
     }
 
+    /**
+     * 获取可选的预览尺寸
+     *
+     * @param sizes 尺寸
+     * @param width 宽度
+     * @param height 高度
+     * @return 族中的尺寸
+     */
     @SuppressWarnings("deprecation")
     public static Size getOptimalPreviewSize(List<Size> sizes, int width, int height) {
         final double ASPECT_TOLERANCE = 0.1;
@@ -379,6 +433,9 @@ public final class CameraHelper {
         }
     }
 
+    // endregion
+
+    // region 计算视频相关的逻辑
     private static double calculateApproximateVideoSize(CamcorderProfile camcorderProfile, int seconds) {
         return ((camcorderProfile.videoBitRate / (float) 1 + camcorderProfile.audioBitRate / (float) 1) * seconds) / (float) 8;
     }
@@ -390,7 +447,9 @@ public final class CameraHelper {
     private static long calculateMinimumRequiredBitRate(CamcorderProfile camcorderProfile, long maxFileSize, int seconds) {
         return 8 * maxFileSize / seconds - camcorderProfile.audioBitRate;
     }
+    // endregion
 
+    // region 获取 CamcorderProfile
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public static CamcorderProfile getCamcorderProfile(String cameraId, long maximumFileSize, int minimumDurationInSeconds) {
         if (TextUtils.isEmpty(cameraId)) {
@@ -481,6 +540,7 @@ public final class CameraHelper {
             }
         }
     }
+    // endregion
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private static class CompareSizesByArea2 implements Comparator<Size> {

@@ -83,7 +83,6 @@ public class Camera1Manager extends BaseCameraManager<Integer, SurfaceHolder.Cal
                                             camera.stopPreview();
                                         } catch (Exception ignore) {
                                         }
-
                                         startPreview(surfaceHolder);
                                     }
 
@@ -105,7 +104,6 @@ public class Camera1Manager extends BaseCameraManager<Integer, SurfaceHolder.Cal
 
                                     @Override
                                     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
-
                                     }
                                 });
                             }
@@ -256,8 +254,18 @@ public class Camera1Manager extends BaseCameraManager<Integer, SurfaceHolder.Cal
         }
     }
 
+    /**
+     * 根据要求的图片的质量和相机支持的图片的尺寸，获取一个对应的图片的尺寸
+     *
+     * @param mediaQuality 图片的质量
+     * @return 图片的尺寸
+     */
     @Override
     public Size getPhotoSizeForQuality(@Configuration.MediaQuality int mediaQuality) {
+        /* TODO 这里就是我们要找的获取图片的尺寸相关的方法，调用了获取支持的参数的！！！
+         * 所以这里就是我们要找的设置图片的高度和宽度的方法！！
+          * 不过感觉这个方法的效率有点低，因为这里每次都要获取一次，然后还要放进列表中，再进行计算，
+           * 这种虽然代码看上去非常简洁，但是效率略低一些。*/
         return CameraHelper.getPictureSize(Size.fromList(camera.getParameters().getSupportedPictureSizes()), mediaQuality);
     }
 
@@ -618,8 +626,15 @@ public class Camera1Manager extends BaseCameraManager<Integer, SurfaceHolder.Cal
         return array;
     }
 
+    /**
+     * 返回用于显示的照片质量的选项，针对各种不同的图片质量的
+     *
+     * @return 一个字符串数组
+     */
     @Override
     public CharSequence[] getPhotoQualityOptions() {
+        /* 好迷……PhotoQualityOption 这个类定义在这里居然没有什么用途，就是为了显示一个字符串……
+         * ……然后外面获取到字符串的时候强转了！！！原来如此，如果这么说的话，存在还是有点意义的 */
         final List<CharSequence> photoQualities = new ArrayList<>();
         photoQualities.add(new PhotoQualityOption(Configuration.MEDIA_QUALITY_HIGHEST, getPhotoSizeForQuality(Configuration.MEDIA_QUALITY_HIGHEST)));
         photoQualities.add(new PhotoQualityOption(Configuration.MEDIA_QUALITY_HIGH, getPhotoSizeForQuality(Configuration.MEDIA_QUALITY_HIGH)));
